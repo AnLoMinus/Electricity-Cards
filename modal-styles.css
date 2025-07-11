@@ -1,0 +1,496 @@
+/* סגנונות המודל */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal.show {
+  opacity: 1;
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  margin: 5% auto;
+  padding: 0;
+  border: 2px solid #00ffff;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  transform: scale(0.7);
+  transition: transform 0.3s ease;
+  box-shadow: 0 0 50px #00ffff44, inset 0 0 30px #00ffff11;
+}
+
+.modal.show .modal-content {
+  transform: scale(1);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #00ffff22 0%, #0080ff22 100%);
+  padding: 20px;
+  border-bottom: 2px solid #00ffff44;
+  border-radius: 18px 18px 0 0;
+  position: relative;
+}
+
+.modal-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00ffff, transparent);
+  animation: headerGlow 2s ease-in-out infinite;
+}
+
+.close {
+  color: #00ffff;
+  float: left;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 10px #00ffff;
+}
+
+.close:hover {
+  color: #ff0000;
+  text-shadow: 0 0 15px #ff0000;
+  transform: scale(1.2);
+}
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.modal-icon {
+  font-size: 2.5rem;
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+.modal-title h2 {
+  color: #00ffff;
+  text-shadow: 0 0 15px #00ffff;
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.modal-level {
+  color: #80d4ff;
+  font-size: 1rem;
+  text-shadow: 0 0 5px #80d4ff;
+}
+
+.modal-body {
+  padding: 25px;
+  color: #e0e0e0;
+  line-height: 1.6;
+}
+
+/* סגנונות תוכן הקלף - מבנה חדש */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.main-title {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, #00ffff11 0%, #0080ff11 100%);
+  border-radius: 15px;
+  border: 1px solid #00ffff44;
+}
+
+.title-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 10px;
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+.main-title h3 {
+  color: #00ffff;
+  text-shadow: 0 0 15px #00ffff;
+  margin: 0;
+  font-size: 2rem;
+}
+
+/* מקטעים חדשים */
+.innovative-idea,
+.self-reflection,
+.concrete-example,
+.warning-section,
+.practical-tip,
+.inspiration-quote {
+  padding: 20px;
+  border-radius: 15px;
+  border: 2px solid;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.innovative-idea {
+  background: linear-gradient(135deg, #00ffff11 0%, #0080ff11 100%);
+  border-color: #00ffff44;
+}
+
+.innovative-idea:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px #00ffff33;
+}
+
+.self-reflection {
+  background: linear-gradient(135deg, #ff00ff11 0%, #8000ff11 100%);
+  border-color: #ff00ff44;
+}
+
+.self-reflection:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px #ff00ff33;
+}
+
+.concrete-example {
+  background: linear-gradient(135deg, #ffff0011 0%, #ff800011 100%);
+  border-color: #ffff0044;
+}
+
+.concrete-example:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px #ffff0033;
+}
+
+.warning-section {
+  background: linear-gradient(135deg, #ff000011 0%, #80000011 100%);
+  border-color: #ff000044;
+}
+
+.warning-section:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px #ff000033;
+}
+
+.practical-tip {
+  background: linear-gradient(135deg, #00ff0011 0%, #00800011 100%);
+  border-color: #00ff0044;
+}
+
+.practical-tip:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px #00ff0033;
+}
+
+.inspiration-quote {
+  background: linear-gradient(135deg, #ff800011 0%, #ff400011 100%);
+  border-color: #ff800044;
+}
+
+.inspiration-quote:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px #ff800033;
+}
+
+/* כותרות המקטעים */
+.innovative-idea h4,
+.self-reflection h4,
+.concrete-example h4,
+.warning-section h4,
+.practical-tip h4,
+.inspiration-quote h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.innovative-idea h4 {
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff;
+}
+
+.self-reflection h4 {
+  color: #ff00ff;
+  text-shadow: 0 0 10px #ff00ff;
+}
+
+.concrete-example h4 {
+  color: #ffff00;
+  text-shadow: 0 0 10px #ffff00;
+}
+
+.warning-section h4 {
+  color: #ff6666;
+  text-shadow: 0 0 10px #ff6666;
+}
+
+.practical-tip h4 {
+  color: #66ff66;
+  text-shadow: 0 0 10px #66ff66;
+}
+
+.inspiration-quote h4 {
+  color: #ffaa66;
+  text-shadow: 0 0 10px #ffaa66;
+}
+
+/* תוכן המקטעים */
+.card-content p {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.card-content strong {
+  color: #ffffff;
+  text-shadow: 0 0 5px #ffffff;
+}
+
+/* תיבת דוגמה */
+.example-box {
+  background: rgba(255, 255, 0, 0.1);
+  border: 1px solid #ffff0044;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 15px 0;
+  text-align: center;
+  font-weight: bold;
+  backdrop-filter: blur(5px);
+}
+
+.example-box p {
+  margin: 8px 0;
+  font-size: 1.1rem;
+}
+
+/* תיבת ציטוט השראה */
+.quote-box {
+  background: rgba(255, 128, 0, 0.1);
+  border: 1px solid #ff800044;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 15px 0;
+  text-align: center;
+  font-style: italic;
+  backdrop-filter: blur(5px);
+}
+
+.quote-box p {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #ffaa66;
+  text-shadow: 0 0 5px #ffaa66;
+}
+
+/* סגנונות מיוחדים למעגל חשמלי */
+.circuit-parts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.part {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid #00ffff44;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.part:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 15px 30px #00ffff44;
+}
+
+.part-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 15px;
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+.part strong {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #00ffff;
+}
+
+/* סגנונות לסוללות */
+.battery-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.battery-type {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid #00ffff44;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.battery-type:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 15px 30px #00ffff44;
+}
+
+.battery-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 15px;
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+.battery-type strong {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #00ffff;
+}
+
+/* רספונסיביות */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    margin: 10% auto;
+    max-height: 90vh;
+  }
+
+  .modal-title h2 {
+    font-size: 1.4rem;
+  }
+
+  .modal-icon {
+    font-size: 2rem;
+  }
+
+  .main-title h3 {
+    font-size: 1.6rem;
+  }
+
+  .title-icon {
+    font-size: 2.5rem;
+  }
+
+  .circuit-parts,
+  .battery-types {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-body {
+    padding: 20px;
+  }
+
+  .innovative-idea,
+  .self-reflection,
+  .concrete-example,
+  .warning-section,
+  .practical-tip,
+  .inspiration-quote {
+    padding: 15px;
+  }
+
+  .card-content {
+    gap: 20px;
+  }
+}
+
+/* אנימציות */
+@keyframes iconFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes headerGlow {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* אפקט גלילה */
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: rgba(0, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: #00ffff;
+  border-radius: 4px;
+  box-shadow: 0 0 5px #00ffff;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: #0080ff;
+}
+
+/* אפקטים נוספים */
+.innovative-idea::before,
+.self-reflection::before,
+.concrete-example::before,
+.warning-section::before,
+.practical-tip::before,
+.inspiration-quote::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.innovative-idea:hover::before,
+.self-reflection:hover::before,
+.concrete-example:hover::before,
+.warning-section:hover::before,
+.practical-tip:hover::before,
+.inspiration-quote:hover::before {
+  left: 100%;
+}

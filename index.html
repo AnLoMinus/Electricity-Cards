@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>משחק קלפים לימודי בחשמל ואלקטרוניקה</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            direction: rtl;
+            position: relative;
+            overflow-x: hidden;
+            animation: backgroundShift 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* אפקט ניצוצות מתקדם */
+        .sparks-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .spark {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00ffff;
+            border-radius: 50%;
+            animation: sparkle 3s linear infinite;
+            box-shadow: 0 0 6px #00ffff, 0 0 12px #00ffff;
+        }
+
+        @keyframes sparkle {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+
+            10% {
+                opacity: 1;
+                transform: translateY(90vh) scale(1);
+            }
+
+            90% {
+                opacity: 1;
+                transform: translateY(10vh) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(0) scale(0);
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #00ffff;
+            text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+            background: linear-gradient(45deg, #00ffff, #0080ff, #00ffff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 2s ease-in-out infinite alternate, gradientShift 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0% {
+                filter: brightness(1) drop-shadow(0 0 10px #00ffff);
+            }
+
+            100% {
+                filter: brightness(1.3) drop-shadow(0 0 20px #00ffff);
+            }
+        }
+
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        h2 {
+            text-align: center;
+            color: #80d4ff;
+            text-shadow: 0 0 15px #80d4ff;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            animation: subtitlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes subtitlePulse {
+
+            0%,
+            100% {
+                opacity: 0.8;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        .level-header {
+            background: linear-gradient(135deg, #00ffff22 0%, #0080ff22 50%, #00ffff22 100%);
+            color: #fff;
+            padding: 20px;
+            margin: 40px 0 20px 0;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00ffff;
+            border-radius: 15px;
+            border: 2px solid #00ffff44;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .level-header:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px #00ffff44;
+            border-color: #00ffff88;
+        }
+
+        .level-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, #00ffff22, transparent);
+            transition: left 0.5s ease;
+        }
+
+        .level-header:hover::before {
+            left: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            background: rgba(10, 10, 20, 0.9);
+            box-shadow: 0 0 30px #00ffff33, inset 0 0 30px #00ffff11;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid #00ffff44;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        table:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 40px #00ffff44, inset 0 0 40px #00ffff22;
+        }
+
+        th {
+            background: linear-gradient(135deg, #00ffff22 0%, #0080ff22 100%);
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border-bottom: 2px solid #00ffff44;
+            position: relative;
+        }
+
+        th::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            animation: headerGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes headerGlow {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #00ffff22;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        tr {
+            transition: all 0.3s ease;
+        }
+
+        tr:hover {
+            background: rgba(0, 255, 255, 0.1);
+            transform: translateX(-5px);
+        }
+
+        tr:hover td {
+            color: #00ffff;
+            text-shadow: 0 0 5px #00ffff;
+        }
+
+        td:first-child {
+            font-weight: bold;
+            color: #00ffff;
+            text-shadow: 0 0 5px #00ffff;
+        }
+
+        td:nth-child(2) {
+            font-weight: bold;
+            color: #80d4ff;
+        }
+
+        td:last-child {
+            font-size: 1.5rem;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        /* אפקטים מיוחדים לקלפים */
+        .card-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-effect::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, #00ffff22, transparent);
+            animation: rotate 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        tr:hover .card-effect::before {
+            opacity: 1;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* רספונסיביות */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th,
+            td {
+                padding: 8px 5px;
+            }
+
+            .level-header {
+                padding: 15px;
+                margin: 20px 0 15px 0;
+            }
+        }
+
+        /* אפקט גלילה חלקה */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* אפקט טעינה */
+        .loading-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeOut 2s ease-in-out 1s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #00ffff22;
+            border-top: 3px solid #00ffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* אפקטים נוספים */
+        .neon-border {
+            position: relative;
+        }
+
+        .neon-border::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00ffff, #0080ff, #00ffff);
+            border-radius: 17px;
+            z-index: -1;
+            animation: borderGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="modal-styles.css">
+</head>
+
+<body>
+    <!-- אפקט טעינה -->
+    <div class="loading-effect">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- אפקט ניצוצות -->
+    <div class="sparks-container" id="sparksContainer"></div>
+
+    <div class="container">
+        <h1>⚡ משחק קלפים לימודי בחשמל ואלקטרוניקה ⚡</h1>
+        <h2>🎯 מחולק ל-5 רמות - כל רמה 10 קלפים 🎯</h2>
+
+        <div class="level-header neon-border">
+            <h3>⚡️ רמה 1: יסודות החשמל (0%-20%)</h3>
+        </div>
+        <table class="card-effect">
+            <tr>
+                <th>#</th>
+                <th>נושא הקלף</th>
+                <th>תיאור קצר</th>
+                <th>אייקון</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>מהו חשמל?</td>
+                <td>יסודות החשמל</td>
+                <td>⚡️</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>מעגל חשמלי פשוט</td>
+                <td>מקור, מוליך, צרכן</td>
+                <td>🔋</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>סוללות</td>
+                <td>סוגי סוללות בסיסיים</td>
+                <td>🔋</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>חיבורי סדר</td>
+                <td>ניתוח חיבור טורי</td>
+                <td>🔗</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>חיבורי מקביל</td>
+                <td>ניתוח חיבור מקבילי</td>
+                <td>🔌</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>מוליכים</td>
+                <td>חומרים מעבירים חשמל</td>
+                <td>🧰</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>מבודדים</td>
+                <td>חומרים שאינם מוליכים</td>
+                <td>🚧</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>סמל וולט</td>
+                <td>מהו מתח חשמלי</td>
+                <td>⚡️V</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>סמל אמפר</td>
+                <td>מהו זרם חשמלי</td>
+                <td>⚡️A</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>סמל אום</td>
+                <td>התנגדות בסיסית</td>
+                <td>Ω</td>
+            </tr>
+        </table>
+
+        <div class="level-header neon-border">
+            <h3>🔋 רמה 2: מדידה והבנה (20%-40%)</h3>
+        </div>
+        <table class="card-effect">
+            <tr>
+                <th>#</th>
+                <th>נושא הקלף</th>
+                <th>תיאור קצר</th>
+                <th>אייקון</th>
+            </tr>
+            <tr>
+                <td>11</td>
+                <td>חוק אוהם</td>
+                <td>U=I×R בסיס</td>
+                <td>📐</td>
+            </tr>
+            <tr>
+                <td>12</td>
+                <td>מד מתח</td>
+                <td>למדוד וולט</td>
+                <td>🔧V</td>
+            </tr>
+            <tr>
+                <td>13</td>
+                <td>מד זרם</td>
+                <td>למדוד אמפר</td>
+                <td>🔧A</td>
+            </tr>
+            <tr>
+                <td>14</td>
+                <td>מד התנגדות</td>
+                <td>למדוד אום</td>
+                <td>🔧Ω</td>
+            </tr>
+            <tr>
+                <td>15</td>
+                <td>רב מודד</td>
+                <td>מה זה מולטימטר</td>
+                <td>🧪</td>
+            </tr>
+            <tr>
+                <td>16</td>
+                <td>נורה במעגל</td>
+                <td>דוגמה לצרכן</td>
+                <td>💡</td>
+            </tr>
+            <tr>
+                <td>17</td>
+                <td>מפסק פשוט</td>
+                <td>פתיחה/סגירה של מעגל</td>
+                <td>🔘</td>
+            </tr>
+            <tr>
+                <td>18</td>
+                <td>נורית לד</td>
+                <td>הבנת כיווניות</td>
+                <td>🔴</td>
+            </tr>
+            <tr>
+                <td>19</td>
+                <td>פיוז</td>
+                <td>מגן מפני זרמים גבוהים</td>
+                <td>🧯</td>
+            </tr>
+            <tr>
+                <td>20</td>
+                <td>כבלים וחוטים</td>
+                <td>צבעים ותקנים</td>
+                <td>🧵</td>
+            </tr>
+        </table>
+
+        <div class="level-header neon-border">
+            <h3>🧰 רמה 3: רכיבים פעילים (40%-60%)</h3>
+        </div>
+        <table class="card-effect">
+            <tr>
+                <th>#</th>
+                <th>נושא הקלף</th>
+                <th>תיאור קצר</th>
+                <th>אייקון</th>
+            </tr>
+            <tr>
+                <td>21</td>
+                <td>נגדים</td>
+                <td>הפחתת זרם</td>
+                <td>🌀</td>
+            </tr>
+            <tr>
+                <td>22</td>
+                <td>קבלים</td>
+                <td>אגירת מטען</td>
+                <td>⚗️</td>
+            </tr>
+            <tr>
+                <td>23</td>
+                <td>דיודות</td>
+                <td>מעבר חד-כיווני</td>
+                <td>🔻</td>
+            </tr>
+            <tr>
+                <td>24</td>
+                <td>טרנזיסטורים</td>
+                <td>שליטה בזרם</td>
+                <td>🔧</td>
+            </tr>
+            <tr>
+                <td>25</td>
+                <td>מעגל משולב</td>
+                <td>רכיב IC פשוט</td>
+                <td>📦</td>
+            </tr>
+            <tr>
+                <td>26</td>
+                <td>חיישני מגע</td>
+                <td>זיהוי באמצעות מגע</td>
+                <td>✋</td>
+            </tr>
+            <tr>
+                <td>27</td>
+                <td>חיישני אור</td>
+                <td>זיהוי אור</td>
+                <td>🌞</td>
+            </tr>
+            <tr>
+                <td>28</td>
+                <td>ממסרים</td>
+                <td>מתג מבוקר</td>
+                <td>⚙️</td>
+            </tr>
+            <tr>
+                <td>29</td>
+                <td>לחצן פעמון</td>
+                <td>רכיב פשוט נפוץ</td>
+                <td>🔔</td>
+            </tr>
+            <tr>
+                <td>30</td>
+                <td>ווסת מתח</td>
+                <td>שמירה על יציבות</td>
+                <td>⚖️</td>
+            </tr>
+        </table>
+
+        <div class="level-header neon-border">
+            <h3>🌀 רמה 4: מערכות ומעגלים מורכבים (60%-80%)</h3>
+        </div>
+        <table class="card-effect">
+            <tr>
+                <th>#</th>
+                <th>נושא הקלף</th>
+                <th>תיאור קצר</th>
+                <th>אייקון</th>
+            </tr>
+            <tr>
+                <td>31</td>
+                <td>מעגל PWM</td>
+                <td>בקרת מהירות/עוצמה</td>
+                <td>🕹️</td>
+            </tr>
+            <tr>
+                <td>32</td>
+                <td>בקרים פשוטים</td>
+                <td>מיקרו-בקר בסיסי</td>
+                <td>🤖</td>
+            </tr>
+            <tr>
+                <td>33</td>
+                <td>חיישני טמפרטורה</td>
+                <td>מדידת חום</td>
+                <td>🌡️</td>
+            </tr>
+            <tr>
+                <td>34</td>
+                <td>מנועים חשמליים</td>
+                <td>עקרון הפעולה</td>
+                <td>🌀</td>
+            </tr>
+            <tr>
+                <td>35</td>
+                <td>סלילים</td>
+                <td>השראות במעגל</td>
+                <td>🌀⚡</td>
+            </tr>
+            <tr>
+                <td>36</td>
+                <td>מתגים מכניים</td>
+                <td>סוגי מתגים</td>
+                <td>🖲️</td>
+            </tr>
+            <tr>
+                <td>37</td>
+                <td>לוח לחיבורים</td>
+                <td>Breadboard</td>
+                <td>🧩</td>
+            </tr>
+            <tr>
+                <td>38</td>
+                <td>ספק כוח</td>
+                <td>מתח יציב</td>
+                <td>🔋⚡</td>
+            </tr>
+            <tr>
+                <td>39</td>
+                <td>מפסק דו-כיווני</td>
+                <td>שליטה מ-2 מקומות</td>
+                <td>🔛</td>
+            </tr>
+            <tr>
+                <td>40</td>
+                <td>מעגל תאורה</td>
+                <td>דוגמה פרקטית</td>
+                <td>💡💡</td>
+            </tr>
+        </table>
+
+        <div class="level-header neon-border">
+            <h3>🏆 רמה 5: מקצוענים (80%-100%)</h3>
+        </div>
+        <table class="card-effect">
+            <tr>
+                <th>#</th>
+                <th>נושא הקלף</th>
+                <th>תיאור קצר</th>
+                <th>אייקון</th>
+            </tr>
+            <tr>
+                <td>41</td>
+                <td>מעגל טעינה</td>
+                <td>סוללות נטענות</td>
+                <td>🔌🔋</td>
+            </tr>
+            <tr>
+                <td>42</td>
+                <td>מעגל מגן</td>
+                <td>הגנת עומס/קצר</td>
+                <td>🛡️</td>
+            </tr>
+            <tr>
+                <td>43</td>
+                <td>שנאי</td>
+                <td>המרת מתח</td>
+                <td>🔄</td>
+            </tr>
+            <tr>
+                <td>44</td>
+                <td>ספק ממותג</td>
+                <td>נצילות גבוהה</td>
+                <td>🔋⚙️</td>
+            </tr>
+            <tr>
+                <td>45</td>
+                <td>מעגל מגבר</td>
+                <td>עוצמת אות</td>
+                <td>🎚️</td>
+            </tr>
+            <tr>
+                <td>46</td>
+                <td>מעגל תיקון</td>
+                <td>יישור זרם AC</td>
+                <td>🔀</td>
+            </tr>
+            <tr>
+                <td>47</td>
+                <td>מעגל אלקטרוני משולב</td>
+                <td>פרויקט קטן</td>
+                <td>🖲️</td>
+            </tr>
+            <tr>
+                <td>48</td>
+                <td>תכנון PCB</td>
+                <td>כרטיס מודפס</td>
+                <td>🖨️</td>
+            </tr>
+            <tr>
+                <td>49</td>
+                <td>איתור תקלות</td>
+                <td>בדיקה שיטתית</td>
+                <td>🧐</td>
+            </tr>
+            <tr>
+                <td>50</td>
+                <td>פרויקט גמר</td>
+                <td>בניית אב-טיפוס</td>
+                <td>🏆</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- טעינת הסקריפטים הנפרדים עם כל הקלפים -->
+    <script src="level1-cards.js"></script>
+    <script src="level2-cards.js"></script>
+    <script src="level3-cards.js"></script>
+    <script src="level4-cards.js"></script>
+    <script src="level5-cards.js"></script>
+    <script src="cards-modal.js"></script>
+    <script>
+        // יצירת אפקט ניצוצות
+        function createSparks() {
+            const container = document.getElementById('sparksContainer');
+            const sparkCount = 20;
+
+            for (let i = 0; i < sparkCount; i++) {
+                setTimeout(() => {
+                    const spark = document.createElement('div');
+                    spark.className = 'spark';
+                    spark.style.left = Math.random() * 100 + '%';
+                    spark.style.animationDelay = Math.random() * 3 + 's';
+                    container.appendChild(spark);
+
+                    // הסרת הניצוץ אחרי האנימציה
+                    setTimeout(() => {
+                        spark.remove();
+                    }, 3000);
+                }, i * 150);
+            }
+        }
+
+        // יצירת ניצוצות כל 4 שניות
+        setInterval(createSparks, 4000);
+        createSparks(); // יצירת ניצוצות ראשונים
+
+        // אפקט hover לטבלאות
+        document.querySelectorAll('table').forEach(table => {
+            table.addEventListener('mouseenter', function () {
+                this.style.transform = 'scale(1.02)';
+            });
+
+            table.addEventListener('mouseleave', function () {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // אפקט לחיצה על כותרות רמות
+        document.querySelectorAll('.level-header').forEach(header => {
+            header.addEventListener('click', function () {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+
+        // אפקט גלילה חלקה
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // אפקט טעינה
+        window.addEventListener('load', function () {
+            setTimeout(() => {
+                document.querySelector('.loading-effect').style.display = 'none';
+            }, 2000);
+        });
+
+        // הוספת מאזיני לחיצה לכל השורות בטבלאות
+        document.addEventListener('DOMContentLoaded', function () {
+            // המתנה לטעינת כל הסקריפטים
+            setTimeout(() => {
+                // איחוד כל הקלפים מכל הרמות
+                const allCards = {
+                    ...window.level1Cards,
+                    ...window.level2Cards,
+                    ...window.level3Cards,
+                    ...window.level4Cards,
+                    ...window.level5Cards
+                };
+
+                // הוספת מאזיני לחיצה לכל השורות
+                document.querySelectorAll('table tr').forEach((row, index) => {
+                    if (index > 0) { // דילוג על שורת הכותרת
+                        const cardNumber = row.querySelector('td:first-child').textContent;
+                        if (allCards[cardNumber]) {
+                            row.style.cursor = 'pointer';
+                            row.addEventListener('click', () => {
+                                openModal(parseInt(cardNumber));
+                            });
+                        }
+                    }
+                });
+            }, 1500);
+        });
+    </script>
+
+    <!-- פוטר עם לינקים לרשתות חברתיות -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>🔗 קישורים שימושיים</h4>
+                <div class="social-links">
+                    <a href="https://github.com/AnLoMinus/Electricity-Cards" target="_blank" class="social-link github">
+                        <span class="social-icon">📚</span>
+                        <span class="social-text">מאגר GitHub</span>
+                    </a>
+                    <a href="https://www.facebook.com/groups/704035402510796" target="_blank"
+                        class="social-link facebook">
+                        <span class="social-icon">📘</span>
+                        <span class="social-text">קבוצת פייסבוק</span>
+                    </a>
+                    <a href="https://chat.whatsapp.com/IuK1rPLI2ewE8E5MtkKQSI" target="_blank"
+                        class="social-link whatsapp">
+                        <span class="social-icon">📲</span>
+                        <span class="social-text">הצטרפו לוואטסאפ</span>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <p class="footer-text">🎓 למדו חשמל בצורה מהנה ובטוחה!</p>
+                <p class="footer-text">⚡ תיקוני חשמל לקורקינטים ואופניים חשמליים</p>
+            </div>
+            <div class="footer-section contact-info">
+                <h4>📞 יצירת קשר</h4>
+                <div class="contact-details">
+                    <p class="contact-text">
+                        <span class="contact-icon">👨‍🔧</span>
+                        <strong>משה לאון יעקובוב</strong> (AnLoMinus)
+                    </p>
+                    <p class="contact-text">
+                        <span class="contact-icon">📱</span>
+                        <a href="tel:054-328-5967" class="phone-link">054-328-5967</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .footer {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-top: 3px solid #00d4ff;
+            box-shadow: 0 -10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .footer-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h4 {
+            color: #00d4ff;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 25px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
+            border-color: #00d4ff;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 212, 255, 0.1));
+        }
+
+        .social-icon {
+            font-size: 1.5rem;
+            filter: drop-shadow(0 0 5px rgba(0, 212, 255, 0.5));
+        }
+
+        .social-text {
+            font-size: 1rem;
+        }
+
+        .footer-text {
+            color: #b8c6db;
+            margin: 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .contact-info {
+            border-top: 1px solid rgba(0, 212, 255, 0.3);
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .contact-text {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: #b8c6db;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .contact-icon {
+            font-size: 1.3rem;
+            filter: drop-shadow(0 0 5px rgba(0, 212, 255, 0.5));
+        }
+
+        .phone-link {
+            color: #00d4ff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .phone-link:hover {
+            background: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* אפקטים מיוחדים לפוטר */
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            animation: footerGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes footerGlow {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* התאמה למובייל */
+        @media (max-width: 768px) {
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .social-link {
+                width: 80%;
+                justify-content: center;
+            }
+
+            .footer-content {
+                padding: 0 1rem;
+            }
+
+            .contact-text {
+                font-size: 1rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 0.3rem;
+            }
+
+            .phone-link {
+                font-size: 1.2rem;
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+</body>
+
+</html>
